@@ -2,7 +2,6 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// import { saveAs } from 'file-saver';
 
 import { TranslatorService } from './services/translator.service';
 import { FileUploadDetails } from './models/file-upload-details.model';
@@ -26,6 +25,8 @@ export class AppComponent {
     selectedFile: File | null = null;
     languages: any[] = [];
     isTranslationInProgress: boolean = false;
+    isTextExtractingInProgress: boolean = false;
+    fileName: string = '';
 
     private translateService = inject(TranslatorService);
 
@@ -36,21 +37,23 @@ export class AppComponent {
     }
 
     onFileSelected(event: any) {
+        this.isTextExtractingInProgress = true;
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
             this.selectedFile = file;
-            const filename = this.selectedFile ? this.selectedFile.name : '';
+            this.fileName = this.selectedFile ? this.selectedFile.name : '';
             const formData = new FormData();
             formData.append('file', file, file.name)
-            this.translateService.extractTextFromFile(formData, filename).subscribe({
+            this.translateService.extractTextFromFile(formData, this.fileName).subscribe({
                 next: (data: FileUploadDetails) => {
                     this.originalText = data.text;
+                    this.isTextExtractingInProgress = false;
                 }
             })
 
         } else {
             alert('Please select a valid PDF file');
-        }
+            this.isTextExtractingInProgress = false;        }
     }
 
     translate() {
@@ -72,9 +75,14 @@ export class AppComponent {
     downloadPdf() {
         this.translateService.downloadTranslatedPdf(this.translatedText).subscribe({
             next: (data: any) => {
-                console.log(data);
-                // const blob = new Blob([data], { type: 'application/octet-stream' });
-                // saveAs(blob, 'Sample file');
+                const a = document.createElement('a');
+                const objectUrl = URL.createObjectURL(data);
+                a.href = objectUrl;
+                a.download = this.fileName.replace('.pdf', '_') + this.targetLanguage + '_translated'+ '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(objectUrl);
             }
         });
     }

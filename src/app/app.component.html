@@ -1,5 +1,7 @@
 <div class="container">
-    <h1>PDF Translator</h1>
+    <div class="page-header">
+        <h1>keka Translator</h1>
+    </div>
 
     <div class="upload-section">
         <label for="pdfUpload" class="upload-label">
@@ -10,11 +12,11 @@
     </div>
 
     <div class="content-section">
-        <div class="text-panel">
+        <div class="text-panel h-100">
             <ng-container>
-                <h3>Original Text</h3>
+                <h3>Input Text</h3>
                 <textarea [(ngModel)]="originalText" class="text-content editable w-100"
-                    placeholder="Extracted text will appear here...">
+                    placeholder="Extracted text will appear here..." *ngIf="!isTextExtractingInProgress; else textExtractingInProgress">
           </textarea>
             </ng-container>
         </div>
@@ -24,9 +26,7 @@
                 <option value="">Select Language</option>
                 <option *ngFor="let language of languages" [value]="language.name">{{language.name}}</option>
             </select>
-            <button (click)="translate()" [disabled]="!originalText || !targetLanguage" class="translate-btn">
-                Translate →
-            </button>
+            <button (click)="translate()" [disabled]="!originalText || !targetLanguage" class="translate-btn">Translate →</button>
         </div>
 
         <div class="text-panel" *ngIf="!isTranslationInProgress && translatedText; else translationInProgress">
@@ -215,5 +215,11 @@
             </div>
             
         </div>
+    </div>
+</ng-template>
+
+<ng-template #textExtractingInProgress>
+    <div class="d-flex align-items-center justify-content-center min-h-300">
+        <div class="loader"></div>
     </div>
 </ng-template>

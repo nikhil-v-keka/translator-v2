@@ -28,6 +28,6 @@ export class TranslatorService {
     }
 
     downloadTranslatedPdf(htmlContent: string) {
-        return this.httpClient.post(`${this.apiUrl}/pdf`, { html_content: htmlContent });
+        return this.httpClient.post(`${this.apiUrl}/pdf`, { html_content: htmlContent }, { responseType: 'blob' });
     }
 }
