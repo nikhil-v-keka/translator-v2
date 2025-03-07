@@ -25,14 +25,9 @@ export class AppComponent {
     targetLanguage: string = '';
     selectedFile: File | null = null;
     languages: any[] = [];
-    isTranslationInProgress: boolean;
+    isTranslationInProgress: boolean = false;
 
     private translateService = inject(TranslatorService);
-
-    @ViewChild("editorContainer", { static: true })
-    editorContainer: ElementRef | null = null;
-
-    editor;
 
     ngOnInit() {
         this.translateService.getLanguages().subscribe({
@@ -44,7 +39,7 @@ export class AppComponent {
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
             this.selectedFile = file;
-            const filename = this.selectedFile.name;
+            const filename = this.selectedFile ? this.selectedFile.name : '';
             const formData = new FormData();
             formData.append('file', file, file.name)
             this.translateService.extractTextFromFile(formData, filename).subscribe({
