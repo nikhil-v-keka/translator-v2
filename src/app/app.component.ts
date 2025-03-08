@@ -38,6 +38,7 @@ export class AppComponent {
 
     onFileSelected(event: any) {
         this.isTextExtractingInProgress = true;
+        this.translatedText = '';
         const file = event.target.files[0];
         if (file && file.type === 'application/pdf') {
             this.selectedFile = file;

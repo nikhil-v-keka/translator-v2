@@ -16,34 +16,53 @@ h1 {
 }
 
 .upload-section {
-  margin: 20px 0;
-  padding: 20px;
-  border: 2px dashed #3498db;
-  border-radius: 8px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.upload-section:hover {
-  border-color: #2980b9;
-  background-color: #f7f9fc;
-}
-
-.upload-label {
-  display: block;
-  cursor: pointer;
-}
-
-.upload-icon {
-  font-size: 2em;
-  display: block;
-  margin-bottom: 10px;
-}
-
-.file-input {
-  display: none;
-}
-
+    margin: 20px 0;
+    padding: 30px;
+    border: 2px dashed #3498db;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    background-color: #f9f9f9;
+    position: relative;
+    cursor: pointer;
+  
+    &:hover {
+      border-color: #2980b9;
+      background-color: #f1f7ff;
+    }
+  
+    &.drag-over {
+      background-color: #dfeffc;
+      border-color: #1b6ea8;
+    }
+  }
+  
+  .upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .upload-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #3498db;
+    transition: transform 0.3s ease-in-out;
+  
+    .upload-section:hover & {
+      transform: scale(1.1);
+      color: #2980b9;
+    }
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
 .content-section {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -55,8 +74,16 @@ h1 {
   background: white;
   padding: 20px;
   border-radius: 8px;
+  max-height: 500px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+textarea:focus {
+    border: 1px solid #3498db;
+    outline: none;
+    box-shadow: 0 0 5px #2980b9;
+}
+
 
 .text-panel h3 {
   color: #2c3e50;
@@ -121,14 +148,20 @@ button {
 }
 
 .download-btn {
-  background: #2ecc71;
-  color: white;
-  margin-top: 15px;
-}
-
-.download-btn:hover {
-  background: #27ae60;
-}
+    background: #2ecc71;
+    color: white;
+    transition: background 0.3s ease;
+  
+    &:hover:not(:disabled){
+      background: #27ae60;
+    }
+  
+    &:disabled {
+      background: #7beabe;
+      cursor: not-allowed;
+    }
+  }
+  
 
 @media (max-width: 768px) {
   .content-section {
