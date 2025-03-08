@@ -74,6 +74,7 @@ export class AppComponent {
     }
 
     downloadPdf() {
+        this.translatedText.replace(/(\r\n|\n|\r)/gm, "");
         this.translateService.downloadTranslatedPdf(this.translatedText).subscribe({
             next: (data: any) => {
                 const a = document.createElement('a');
